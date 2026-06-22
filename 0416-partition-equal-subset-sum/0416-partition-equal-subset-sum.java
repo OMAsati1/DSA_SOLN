@@ -2,8 +2,9 @@ class Solution {
     int[][] dp;
 
     boolean rec(int[] nums, int sum, int i){
+        if(i<0) return false;
         if (sum == 0) return true;
-        if (i == 0) return nums[0]==sum;
+        // if (i == 0) return nums[0]==sum;
 
         if (dp[i][sum] != -1) return dp[i][sum] == 1;
 
