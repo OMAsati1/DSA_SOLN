@@ -13,7 +13,8 @@ class Solution {
         // }
 
         // return solve(0, target, nums);
-        return tab(nums,target);
+        // return tab(nums,target);
+        return spaceOpt(nums,target);
     }
 
     private int solve(int idx, int target, int[] nums) {
@@ -64,6 +65,33 @@ class Solution {
         return dp[0][target];
        
     }
+    
+    int spaceOpt(int[] nums, int target) {
+    int n = nums.length;
+
+    int[] next = new int[target + 1];
+    next[0] = 1; // dp[n][0] = 1
+
+    for (int idx = n - 1; idx >= 0; idx--) {
+
+        int[] curr = new int[target + 1];
+
+        for (int sum = 0; sum <= target; sum++) {
+
+            int notTake = next[sum];
+
+            int take = 0;
+            if (nums[idx] <= sum)
+                take = next[sum - nums[idx]];
+
+            curr[sum] = take + notTake;
+        }
+
+        next = curr;
+    }
+
+    return next[target];
+}
 }
 
 // Synced seamlessly with LeetHub Pro
