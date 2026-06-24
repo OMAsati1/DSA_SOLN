@@ -31,6 +31,35 @@ class Solution {
         }
         return dp[0][tar];
     }
+    
+       int spcOpt(int[] arr, int diff){
+        int sum=0;
+        int n = arr.length;
+        
+        for(int i=0;i<n;i++) sum+=arr[i];
+        
+        if((sum + diff) % 2 != 0) return 0;
+        int tar = (sum+diff)/2;
+        
+        if(diff > sum) return 0;
+        
+        int[] next=new int[tar+1];
+        next[0]=1;
+        
+        for(int i=n-1;i>=0;i--){
+            int[] curr=new int[tar+1];
+            for(int j = 0;j<=tar;j++){
+                int not_take=next[j];
+                int take=0;
+                if(j-arr[i]>=0) take = next[j-arr[i]];
+                
+                curr[j]=take+not_take;
+            }
+            next=curr;
+        }
+        return next[tar];
+    }
+    
     public int countPartitions(int[] arr, int diff) {
         // code here
         /*int sum=0;
@@ -42,7 +71,10 @@ class Solution {
         for(int i = 0; i <= n; i++)
     Arrays.fill(dp[i], -1);
         return solve(arr,0,(sum+diff)/2);*/
-        return tab(arr,diff); 
+        
+        // return tab(arr,diff); 
+        
+        return spcOpt(arr,diff);
     }
 }
 
