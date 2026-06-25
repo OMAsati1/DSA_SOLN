@@ -38,6 +38,29 @@ class Solution {
         }
         return dp[n - 1][amount];
     }
+
+    int spcOpt(int amount, int[] coins){
+        int n = coins.length;
+        int[] prev = new int[amount+1];
+
+        prev[0]=1;
+
+        for(int i=0;i<n;i++){
+            int[] curr = new int[amount+1];
+            curr[0] = 1;
+            for(int a = 1;a<=amount;a++){
+               int skip = prev[a];
+
+            int take = 0;
+            if (a >= coins[i])
+                take = curr[a - coins[i]];
+
+            curr[a] = skip + take;  
+            }
+            prev=curr;
+        }
+        return prev[amount];
+    }
     public int change(int amount, int[] coins) {
         int n = coins.length;
         // return rec(coins,n-1,amount) == (int)1e9 ? 0 : rec(coins,n-1,amount);
@@ -46,7 +69,8 @@ class Solution {
         for(int i=0;i<n;i++) Arrays.fill(dp[i],-1);
         return memo(coins,n-1,amount) == (int)1e9 ? -1 : memo(coins,n-1,amount);  */
 
-        return tab(amount,coins);
+        // return tab(amount,coins);
+        return spcOpt(amount,coins);
     }
 }
 
