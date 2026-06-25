@@ -18,13 +18,35 @@ class Solution {
         if(amount-coins[idx]>=0) take = memo(coins,idx,amount-coins[idx]);
         return dp[idx][amount] = skip+take;
     }
+
+    int tab(int amount, int[] coins){
+        int n = coins.length;
+        dp = new int[n][amount+1];
+
+        for(int i=0;i<n;i++) dp[i][0]=1;
+
+        for(int i=0;i<n;i++){
+            for(int a = 1;a<=amount;a++){
+               int skip = (i > 0) ? dp[i - 1][a] : 0;
+
+            int take = 0;
+            if (a >= coins[i])
+                take = dp[i][a - coins[i]];
+
+            dp[i][a] = skip + take;  
+            }
+        }
+        return dp[n - 1][amount];
+    }
     public int change(int amount, int[] coins) {
         int n = coins.length;
         // return rec(coins,n-1,amount) == (int)1e9 ? 0 : rec(coins,n-1,amount);
 
-        dp = new int[n][amount+1];
+       /*  dp = new int[n][amount+1];
         for(int i=0;i<n;i++) Arrays.fill(dp[i],-1);
-        return memo(coins,n-1,amount) == (int)1e9 ? -1 : memo(coins,n-1,amount); 
+        return memo(coins,n-1,amount) == (int)1e9 ? -1 : memo(coins,n-1,amount);  */
+
+        return tab(amount,coins);
     }
 }
 
