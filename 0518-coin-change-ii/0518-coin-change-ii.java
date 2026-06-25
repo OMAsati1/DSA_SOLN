@@ -43,7 +43,7 @@ class Solution {
         int n = coins.length;
         int[] prev = new int[amount+1];
 
-        prev[0]=1;
+        // prev[0]=1;
 
         for(int i=0;i<n;i++){
             int[] curr = new int[amount+1];
