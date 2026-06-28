@@ -14,6 +14,30 @@ class Solution {
     );
 }
 
+static int tab(String s1, String s2){
+    int n = s1.length();
+        int m = s2.length();
+
+        int[][] dp = new int[n + 1][m + 1];
+
+        // dp[n][*] = 0 and dp[*][m] = 0
+        // Already initialized to 0 in Java.
+
+        for (int i = n - 1; i >= 0; i--) {
+            for (int j = m - 1; j >= 0; j--) {
+
+                if (s1.charAt(i) == s2.charAt(j))
+                    dp[i][j] = 1 + dp[i + 1][j + 1];
+                else
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j + 1]);
+
+            }
+        }
+
+        return dp[0][0];
+
+}
+
 static int memo(int i, int j, String s1, String s2) {
 
         if (i == s1.length() || j == s2.length())
@@ -33,7 +57,7 @@ static int memo(int i, int j, String s1, String s2) {
 
     static int lcs(String s1, String s2) {
 
-        int n = s1.length();
+        /*int n = s1.length();
         int m = s2.length();
 
         dp = new int[n][m];
@@ -41,7 +65,8 @@ static int memo(int i, int j, String s1, String s2) {
         for (int[] row : dp)
             Arrays.fill(row, -1);
 
-        return memo(0, 0, s1, s2);
+        return memo(0, 0, s1, s2);*/
+        return tab(s1,s2);
     }
 }
 
