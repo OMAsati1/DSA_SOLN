@@ -38,16 +38,40 @@ class Solution {
         );
     }
 
-    public int longestPalindromeSubseq(String s) {
-        // return rec(0, s.length() - 1, s);
-
-        int n = s.length();
+    int tab(String s){
+         int n = s.length();
         dp = new int[n][n];
 
         for (int i = 0; i < n; i++)
-            Arrays.fill(dp[i], -1);
+            dp[i][i] = 1;
 
-        return memo(0, n - 1, s);
+            for (int i = n - 1; i >= 0; i--) {
+
+            for (int j = i + 1; j < n; j++) {
+
+                if (s.charAt(i) == s.charAt(j))
+                    dp[i][j] = 2 + dp[i + 1][j - 1];
+                else
+                    dp[i][j] = Math.max(dp[i + 1][j], dp[i][j - 1]);
+            }
+        }
+
+        return dp[0][n - 1];
+
+    }
+
+    public int longestPalindromeSubseq(String s) {
+        // return rec(0, s.length() - 1, s);
+
+        // int n = s.length();
+        // dp = new int[n][n];
+
+        // for (int i = 0; i < n; i++)
+        //     Arrays.fill(dp[i], -1);
+
+        // return memo(0, n - 1, s);
+
+        return tab(s);
     }
 }
 
