@@ -68,6 +68,38 @@ class Solution {
         return dp[0][0];
     }
     
+      static int spcOpt(String s1, String s2) {
+
+        int n = s1.length();
+        int m = s2.length();
+
+        int[] next = new int[m + 1];
+
+        // Base case: dp[n][j]
+        for (int j = 0; j <= m; j++)
+            next[j] = m - j;
+
+        for (int i = n - 1; i >= 0; i--) {
+
+            int[] curr = new int[m + 1];
+
+            // Base case: dp[i][m]
+            curr[m] = n - i;
+
+            for (int j = m - 1; j >= 0; j--) {
+
+                if (s1.charAt(i) == s2.charAt(j))
+                    curr[j] = 1 + next[j + 1];
+                else
+                    curr[j] = 1 + Math.min(next[j], curr[j + 1]);
+            }
+
+            next = curr;
+        }
+
+        return next[0];
+    }
+    
     public static int minSuperSeq(String s1, String s2) {
         // code here
         // return rec(0, 0, s1, s2);
@@ -77,7 +109,8 @@ class Solution {
         dp = new int[n][m];
         for(var arr : dp) Arrays.fill(arr,-1);
         return memo(0, 0, s1, s2);*/
-        return tab(s1,s2);
+        // return tab(s1,s2);
+        return spcOpt(s1,s2);
     }
 }
 
