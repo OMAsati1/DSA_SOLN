@@ -1,19 +1,26 @@
 class Solution {
-    int[][] dp;
-    int rec(int i, int j, String s){
-        if(i>=j) return 0;
-         
-         if(dp[i][j]!=-1) return dp[i][j];
 
-         if(s.charAt(i)==s.charAt(j)) return dp[i][j] = rec(i+1,j-1,s);
-
-         return dp[i][j] = 1 + Math.min(rec(i+1,j,s),rec(i,j-1,s));
-    }
     public int minInsertions(String s) {
+
         int n = s.length();
-        dp = new int[n][n];
-        for(var row : dp) Arrays.fill(row,-1);
-        return rec(0,n-1,s);
+        int[][] dp = new int[n][n];
+
+        // len = current substring length
+        for (int len = 2; len <= n; len++) {
+
+            for (int i = 0; i + len - 1 < n; i++) {
+
+                int j = i + len - 1;
+
+                if (s.charAt(i) == s.charAt(j)) {
+                    dp[i][j] = dp[i + 1][j - 1];
+                } else {
+                    dp[i][j] = 1 + Math.min(dp[i + 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+
+        return dp[0][n - 1];
     }
 }
 
