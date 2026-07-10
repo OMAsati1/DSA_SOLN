@@ -1,31 +1,45 @@
 class Solution {
 
-    int expand(String s, int l, int r) {
+    int[][] dp;
 
-        if (l < 0 || r >= s.length())
-            return 0;
+    boolean isPalindrome(String s, int i, int j) {
 
-        if (s.charAt(l) != s.charAt(r))
-            return 0;
+        if (i >= j)
+            return true;
 
-        // Current substring is a palindrome
-        return 1 + expand(s, l - 1, r + 1);
+        if (dp[i][j] != -1)
+            return dp[i][j] == 1;
+
+        if (s.charAt(i) != s.charAt(j)) {
+            dp[i][j] = 0;
+            return false;
+        }
+
+        boolean ans = isPalindrome(s, i + 1, j - 1);
+        dp[i][j] = ans ? 1 : 0;
+
+        return ans;
     }
 
     public int countSubstrings(String s) {
 
-        int ans = 0;
+        int n = s.length();
+        dp = new int[n][n];
 
-        for (int i = 0; i < s.length(); i++) {
+        for (int[] row : dp)
+            Arrays.fill(row, -1);
 
-            // Odd length palindromes
-            ans += expand(s, i, i);
+        int count = 0;
 
-            // Even length palindromes
-            ans += expand(s, i, i + 1);
+        for (int i = 0; i < n; i++) {
+            for (int j = i; j < n; j++) {
+
+                if (isPalindrome(s, i, j))
+                    count++;
+            }
         }
 
-        return ans;
+        return count;
     }
 }
 
