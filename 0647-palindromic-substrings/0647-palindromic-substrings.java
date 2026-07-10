@@ -1,41 +1,25 @@
 class Solution {
-
-    int[][] dp;
-
-    boolean isPalindrome(String s, int i, int j) {
-
-        if (i >= j)
-            return true;
-
-        if (dp[i][j] != -1)
-            return dp[i][j] == 1;
-
-        if (s.charAt(i) != s.charAt(j)) {
-            dp[i][j] = 0;
-            return false;
-        }
-
-        boolean ans = isPalindrome(s, i + 1, j - 1);
-        dp[i][j] = ans ? 1 : 0;
-
-        return ans;
-    }
-
     public int countSubstrings(String s) {
-
         int n = s.length();
-        dp = new int[n][n];
-
-        for (int[] row : dp)
-            Arrays.fill(row, -1);
+        boolean[][] t = new boolean[n][n];
 
         int count = 0;
 
-        for (int i = 0; i < n; i++) {
-            for (int j = i; j < n; j++) {
+        for (int L = 1; L <= n; L++) {
+            for (int i = 0; i + L <= n; i++) {
+                int j = i + L - 1;
 
-                if (isPalindrome(s, i, j))
+                if (i == j) {
+                    t[i][i] = true; // Single characters are palindrome
+                } else if (i + 1 == j) {
+                    t[i][j] = (s.charAt(i) == s.charAt(j)); // Strings of 2 Length
+                } else {
+                    t[i][j] = (s.charAt(i) == s.charAt(j) && t[i + 1][j - 1]);
+                }
+
+                if (t[i][j]) {
                     count++;
+                }
             }
         }
 
