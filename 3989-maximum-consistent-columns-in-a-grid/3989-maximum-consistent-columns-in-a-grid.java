@@ -2,6 +2,7 @@ class Solution {
 
     int[][] grid;
     int limit, rows, cols;
+    int[][] dp;
 
     public int maxConsistentColumns(int[][] grid, int limit) {
 
@@ -10,27 +11,30 @@ class Solution {
         rows = grid.length;
         cols = grid[0].length;
 
-        int[][] dp = new int[cols + 1][cols + 1];
+        dp = new int[cols + 1][cols + 1];
 
-        // Base:
-        // dp[cols][*] = 0
+        for (int i = 0; i <= cols; i++)
+            Arrays.fill(dp[i], -1);
 
-        for (int curr = cols - 1; curr >= 0; curr--) {
+        return solve(0, -1);
+    }
 
-            for (int prev = curr - 1; prev >= -1; prev--) {
+    int solve(int curr, int prev) {
 
-                // Skip
-                int ans = dp[curr + 1][prev + 1];
+        if (curr == cols)
+            return 0;
 
-                // Keep
-                if (prev == -1 || valid(prev, curr))
-                    ans = Math.max(ans, 1 + dp[curr + 1][curr + 1]);
+        if (dp[curr][prev + 1] != -1)
+            return dp[curr][prev + 1];
 
-                dp[curr][prev + 1] = ans;
-            }
-        }
+        // Skip current column
+        int ans = solve(curr + 1, prev);
 
-        return dp[0][0];
+        // Keep current column
+        if (prev == -1 || valid(prev, curr))
+            ans = Math.max(ans, 1 + solve(curr + 1, curr));
+
+        return dp[curr][prev + 1] = ans;
     }
 
     boolean valid(int prev, int curr) {
