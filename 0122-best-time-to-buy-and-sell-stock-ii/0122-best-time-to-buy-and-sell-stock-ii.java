@@ -1,35 +1,23 @@
 class Solution {
-    int rec(int[] prices, int i, int hold, int[][] memo) {
-        if (i == prices.length) return 0;
-
-        if (memo[i][hold] != -1) return memo[i][hold];
-
-        int result;
-        if (hold == 0) {
-            // buy
-            int buy = -prices[i] + rec(prices, i + 1, 1, memo);
-            // skip
-            int skip = rec(prices, i + 1, 0, memo);
-            result = Math.max(buy, skip);
-        } else {
-            // sell
-            int sell = prices[i] + rec(prices, i + 1, 0, memo);
-            // skip
-            int skip = rec(prices, i + 1, 1, memo);
-            result = Math.max(sell, skip);
-        }
-
-        memo[i][hold] = result;
-        return result;
-    }
-
     public int maxProfit(int[] prices) {
         int n = prices.length;
-        int[][] memo = new int[n][2];
-        for (int[] row : memo) 
-            Arrays.fill(row, -1);
-        
-        return rec(prices, 0, 0, memo);
+        int[][] dp = new int[n + 1][2];
+
+        // base case: dp[n][0] = 0, dp[n][1] = 0 (already 0 by default in Java)
+
+        for (int i = n - 1; i >= 0; i--) {
+            // hold = 0 (nothing held)
+            int buy = -prices[i] + dp[i + 1][1];
+            int skip0 = dp[i + 1][0];
+            dp[i][0] = Math.max(buy, skip0);
+
+            // hold = 1 (holding stock)
+            int sell = prices[i] + dp[i + 1][0];
+            int skip1 = dp[i + 1][1];
+            dp[i][1] = Math.max(sell, skip1);
+        }
+
+        return dp[0][0];
     }
 }
 
