@@ -1,32 +1,37 @@
 class Solution {
     public List<List<Integer>> shiftGrid(int[][] grid, int k) {
-        int m = grid.length, n = grid[0].length;
-        for(int l=0;l<k;l++){
-        int[][] temp = new int[m][n];
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (i == 0 && j == 0)
-                    temp[i][j] = grid[m - 1][n - 1];
-                else if (j == 0)
-                    temp[i][j] = grid[i - 1][n - 1];
-                else
-                    temp[i][j] = grid[i][j - 1];
-            }
-        }
-        grid=temp;
-        }
-        List<List<Integer>> ans = new ArrayList<>();
+    int m = grid.length;
+    int n = grid[0].length;
+    int total = m * n;
 
-        for (int[] row : grid) {
-            List<Integer> curr = new ArrayList<>();
-            for (int val : row) {
-                curr.add(val);
-            }
-            ans.add(curr);
-        }
+    k %= total;
 
-        return ans;
+    int[][] temp = new int[m][n];
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+
+            int idx = i * n + j;          // Current 1D index
+            int newIdx = (idx + k) % total; // Index after k shifts
+
+            int newRow = newIdx / n;
+            int newCol = newIdx % n;
+
+            temp[newRow][newCol] = grid[i][j];
+        }
     }
+
+    List<List<Integer>> ans = new ArrayList<>();
+
+    for (int[] row : temp) {
+        List<Integer> curr = new ArrayList<>();
+        for (int val : row)
+            curr.add(val);
+        ans.add(curr);
+    }
+
+    return ans;
+}
 }
 
 // Synced seamlessly with LeetHub Pro
