@@ -6,42 +6,32 @@ class Solution {
 
         int target = countVowels(words[0]);
 
-        StringBuilder ans = new StringBuilder();
-
-        ans.append(words[0]);
-        if(words.length!=1) ans.append(" ");
+        StringBuilder ans = new StringBuilder(words[0]);
 
         for (int i = 1; i < words.length; i++) {
 
-            if (countVowels(words[i]) == target) {
-                words[i] = reverse(words[i]);
-            }
+            ans.append(" ");
 
-            ans.append(words[i]);
-
-            if (i != words.length - 1)
-             ans.append(" ");
+            if (countVowels(words[i]) == target)
+                ans.append(reverse(words[i]));
+            else
+                ans.append(words[i]);
         }
 
         return ans.toString();
     }
 
     private int countVowels(String str) {
-
         int cnt = 0;
-
         for (char ch : str.toCharArray()) {
             if (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u')
                 cnt++;
         }
-
         return cnt;
     }
 
     private String reverse(String str) {
-
-        StringBuilder sb = new StringBuilder(str);
-        return sb.reverse().toString();
+        return new StringBuilder(str).reverse().toString();
     }
 }
 
