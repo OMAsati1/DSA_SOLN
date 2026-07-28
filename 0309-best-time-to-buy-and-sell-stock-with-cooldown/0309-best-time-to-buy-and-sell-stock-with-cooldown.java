@@ -1,24 +1,25 @@
 class Solution {
     public int maxProfit(int[] prices) {
         int n = prices.length;
-        int[][] dp = new int[n + 1][3]; // dp[n][*] = 0 by default
+        int next0 = 0, next1 = 0, next2 = 0; // dp[i+1][0], dp[i+1][1], dp[i+1][2]
 
         for (int i = n - 1; i >= 0; i--) {
-            // state 1: hold
-            int sell = prices[i] + dp[i + 1][2];
-            int skip1 = dp[i + 1][1];
-            dp[i][1] = Math.max(sell, skip1);
+            int sell = prices[i] + next2;
+            int skip1 = next1;
+            int cur1 = Math.max(sell, skip1);
 
-            // state 2: coolDown
-            dp[i][2] = dp[i + 1][0];
+            int cur2 = next0;
 
-            // state 0: free
-            int buy = -prices[i] + dp[i + 1][1];
-            int skip0 = dp[i + 1][0];
-            dp[i][0] = Math.max(buy, skip0);
+            int buy = -prices[i] + next1;
+            int skip0 = next0;
+            int cur0 = Math.max(buy, skip0);
+
+            next0 = cur0;
+            next1 = cur1;
+            next2 = cur2;
         }
 
-        return dp[0][0];
+        return next0;
     }
 }
 
