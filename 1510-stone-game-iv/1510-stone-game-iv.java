@@ -1,28 +1,31 @@
 class Solution {
-    Boolean[][] memo;
+    int[] memo;
 
-    boolean solve(int n, boolean alice) {
+    boolean solve(int n) {
         if (n == 0)
-            return !alice;
+            return false;
 
-        int turn = alice ? 1 : 0;
-
-        if (memo[n][turn] != null)
-            return memo[n][turn];
+        if (memo[n] != -1)
+            return memo[n] == 1;
 
         for (int x = 1; x * x <= n; x++) {
             int square = x * x;
 
-            if (solve(n - square, !alice) == alice)
-                return memo[n][turn] = alice;
+            if (!solve(n - square)) {
+                memo[n] = 1;
+                return true;
+            }
         }
 
-        return memo[n][turn] = !alice;
+        memo[n] = 0;
+        return false;
     }
 
     public boolean winnerSquareGame(int n) {
-        memo = new Boolean[n + 1][2];
-        return solve(n, true);
+        memo = new int[n + 1];
+        Arrays.fill(memo, -1);
+
+        return solve(n);
     }
 }
 
