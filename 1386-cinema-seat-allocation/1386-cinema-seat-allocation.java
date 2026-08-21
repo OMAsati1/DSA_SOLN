@@ -1,16 +1,16 @@
 class Solution {
     public int maxNumberOfFamilies(int n, int[][] reservedSeats) {
-        Map<Integer, Set<Integer>> rowMap = new HashMap<>();
+        Map<Integer, List<Integer>> rowMap = new HashMap<>();
 
         for(int[] rs : reservedSeats){
             int row = rs[0];
             int col = rs[1];
-            rowMap.computeIfAbsent(row, k -> new HashSet<>()).add(col);
+            rowMap.computeIfAbsent(row, k -> new ArrayList<>()).add(col);
         }
 
         int ans = 0;
 
-        for(Set<Integer> cols : rowMap.values()){
+        for(List<Integer> cols : rowMap.values()){
             boolean left = !cols.contains(2) && !cols.contains(3) && !cols.contains(4) && !cols.contains(5);
             boolean right = !cols.contains(6) && !cols.contains(7) && !cols.contains(8) && !cols.contains(9);
             boolean middle = !cols.contains(4) && !cols.contains(5) && !cols.contains(6) && !cols.contains(7);
