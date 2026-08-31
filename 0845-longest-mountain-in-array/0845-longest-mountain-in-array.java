@@ -1,28 +1,24 @@
 class Solution {
     public int longestMountain(int[] arr) {
         int n = arr.length;
-        int ans = 0;
-
-        for (int peak = 1; peak < n - 1; peak++) {
-
-            // Check if current index is a peak
-            if (arr[peak] > arr[peak - 1] && arr[peak] > arr[peak + 1]) {
-
-                int left = peak;
-                while (left > 0 && arr[left] > arr[left - 1]) {
-                    left--;
+        int i = 0;
+        int len = 0;
+        while (i < n - 1) {
+            if (arr[i] < arr[i + 1]) {
+        boolean inc=true,dec=false;
+                int j = i + 1;
+                while (j < n - 1 && arr[j + 1] > arr[j]) {
+                    j++;
                 }
-
-                int right = peak;
-                while (right < n - 1 && arr[right] > arr[right + 1]) {
-                    right++;
+                while (j < n - 1 && arr[j + 1] < arr[j]) {
+                    j++;
+                    dec=true;
                 }
-
-                ans = Math.max(ans, right - left + 1);
+               if(dec && inc) len = Math.max(j - i + 1, len);
             }
+            i++;
         }
-
-        return ans;
+        return len;
     }
 }
 
