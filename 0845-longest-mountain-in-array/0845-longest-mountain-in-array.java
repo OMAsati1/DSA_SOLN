@@ -1,24 +1,37 @@
 class Solution {
     public int longestMountain(int[] arr) {
+
         int n = arr.length;
-        int i = 0;
-        int len = 0;
+        int i = 0, ans = 0;
+
         while (i < n - 1) {
-            if (arr[i] < arr[i + 1]) {
-        boolean inc=true,dec=false;
-                int j = i + 1;
-                while (j < n - 1 && arr[j + 1] > arr[j]) {
-                    j++;
-                }
-                while (j < n - 1 && arr[j + 1] < arr[j]) {
-                    j++;
-                    dec=true;
-                }
-               if(dec && inc) len = Math.max(j - i + 1, len);
+
+            // increasing hona chahiye
+            if (arr[i] >= arr[i + 1]) {
+                i++;
+                continue;
             }
-            i++;
+
+            int j = i;
+
+            // up
+            while (j < n - 1 && arr[j] < arr[j + 1])
+                j++;
+
+            int peak = j;
+
+            // down
+            while (j < n - 1 && arr[j] > arr[j + 1])
+                j++;
+
+            // down nahi hua => mountain nahi hai
+            if (j > peak)
+                ans = Math.max(ans, j - i + 1);
+
+            i = (j == peak) ? j + 1 : j;
         }
-        return len;
+
+        return ans;
     }
 }
 
